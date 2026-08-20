@@ -1,0 +1,3571 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rosko Jenkins — AI Tattoo Toolkit</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --black:#0a0a0a;
+      --dark:#151515;
+      --gray:#666;
+      --light:#f3f3f3;
+      --line:#d8d8d8;
+      --white:#fff;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:#fff;
+      color:var(--black);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    .page-wrap{min-height:100vh}
+
+    /* HEADER */
+    .site-header{
+      border-bottom:1px solid var(--line);
+      padding:28px 0 24px;
+    }
+    .brand-title{
+      font-size:clamp(1.7rem, 4vw, 2.8rem);
+      font-weight:900;
+      letter-spacing:.08em;
+      line-height:1;
+      margin:0;
+    }
+    .brand-subtitle{
+      margin:.65rem 0 0;
+      color:#666;
+      font-size:.76rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    /* Alien logo */
+    .alien-logo{
+      width:76px;
+      height:76px;
+      border:2px solid var(--black);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      flex:0 0 auto;
+      background:#fff;
+    }
+    .alien-head{
+      width:42px;
+      height:30px;
+      border:2px solid var(--black);
+      border-radius:52% 52% 45% 45%;
+      position:relative;
+      transform:translateY(-5px);
+    }
+    .alien-eye{
+      position:absolute;
+      width:8px;
+      height:11px;
+      border-radius:50%;
+      background:var(--black);
+      top:8px;
+    }
+    .alien-eye.left{left:8px}
+    .alien-eye.right{right:8px}
+    .alien-mouth{
+      position:absolute;
+      width:13px;
+      height:6px;
+      border-bottom:2px solid var(--black);
+      border-radius:0 0 50% 50%;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:4px;
+    }
+    .cigarette{
+      position:absolute;
+      width:17px;
+      height:2px;
+      background:var(--black);
+      right:-13px;
+      bottom:12px;
+      transform:rotate(-10deg);
+    }
+    .smoke{
+      position:absolute;
+      right:-17px;
+      top:18px;
+      font-size:13px;
+      color:#777;
+      line-height:1;
+    }
+
+    /* SEARCH */
+    .search-wrap{
+      padding:34px 0 10px;
+    }
+    .search-box{
+      border:2px solid var(--black);
+      border-radius:8px;
+      padding:13px 16px;
+      font-size:1rem;
+      box-shadow:none !important;
+    }
+    .search-box:focus{
+      border-color:var(--black);
+    }
+
+    /* SECTION NAV */
+    .library-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:18px 0 28px;
+    }
+    .nav-pill{
+      border:1px solid #bbb;
+      background:#fff;
+      color:#111;
+      border-radius:999px;
+      padding:9px 14px;
+      font-size:.78rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      text-decoration:none;
+      transition:.15s ease;
+    }
+    .nav-pill:hover,.nav-pill.active{
+      background:#111;
+      color:#fff;
+      border-color:#111;
+    }
+
+    /* CATEGORY */
+    .category-block{
+      border-top:1px solid var(--line);
+      padding:28px 0 36px;
+      scroll-margin-top:20px;
+    }
+    .category-header{
+      cursor:pointer;
+      user-select:none;
+      padding:4px 0 20px;
+    }
+    .category-title{
+      margin:0;
+      font-size:1.35rem;
+      font-weight:900;
+      letter-spacing:.03em;
+    }
+    .category-desc{
+      color:#666;
+      font-size:.9rem;
+      margin:.4rem 0 0;
+    }
+    .category-toggle{
+      font-size:1.5rem;
+      font-weight:300;
+      line-height:1;
+    }
+
+    /* CARDS */
+    .prompt-card{
+      height:100%;
+      border:1px solid #ccc;
+      border-radius:10px;
+      background:#fff;
+      overflow:hidden;
+      transition:transform .15s ease, border-color .15s ease;
+    }
+    .prompt-card:hover{
+      transform:translateY(-2px);
+      border-color:#777;
+    }
+    .card-body-custom{
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .eyebrow{
+      color:#666;
+      font-size:.68rem;
+      text-transform:uppercase;
+      letter-spacing:.11em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+    .prompt-title{
+      font-size:1.05rem;
+      font-weight:900;
+      margin:0 0 8px;
+    }
+    .prompt-description{
+      color:#555;
+      font-size:.84rem;
+      line-height:1.55;
+      margin-bottom:16px;
+    }
+    .prompt-box{
+      background:#f6f6f6;
+      border:1px solid #e2e2e2;
+      border-radius:7px;
+      padding:13px;
+      font-size:.78rem;
+      line-height:1.55;
+      white-space:pre-wrap;
+      max-height:190px;
+      overflow:auto;
+      margin-bottom:10px;
+    }
+    .mini-label{
+      font-size:.68rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      margin:10px 0 6px;
+    }
+    .negative-box{background:#fafafa}
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      margin:12px 0 18px;
+    }
+    .tag{
+      border:1px solid #d2d2d2;
+      border-radius:999px;
+      padding:4px 8px;
+      font-size:.66rem;
+      color:#555;
+    }
+    .card-actions{
+      margin-top:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .btn-rj{
+      background:#111;
+      color:#fff;
+      border:1px solid #111;
+      font-weight:800;
+      font-size:.72rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      padding:9px 12px;
+      border-radius:6px;
+    }
+    .btn-rj:hover{background:#333;color:#fff}
+    .btn-outline-rj{
+      background:#fff;
+      color:#111;
+      border:1px solid #111;
+      font-weight:800;
+      font-size:.72rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      padding:9px 12px;
+      border-radius:6px;
+    }
+    .btn-outline-rj:hover{background:#111;color:#fff}
+
+    /* FOOTER */
+    footer{
+      border-top:1px solid var(--line);
+      margin-top:20px;
+      padding:26px 0 40px;
+      color:#777;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .no-results{
+      display:none;
+      padding:30px 0 50px;
+      color:#666;
+      text-align:center;
+    }
+
+    @media (max-width:575.98px){
+      .site-header{padding-top:20px}
+      .alien-logo{width:60px;height:60px;transform:scale(.9)}
+      .brand-subtitle{font-size:.63rem}
+      .library-nav{gap:6px}
+      .nav-pill{font-size:.67rem;padding:8px 10px}
+      .card-body-custom{padding:16px}
+      .prompt-box{max-height:220px}
+    }
+  </style>
+</head>
+
+<body>
+<div class="page-wrap">
+
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <div>
+          <h1 class="brand-title" style="font-family: 'Cinzel', serif;">ROSKO JENKINS</h1>
+          <p class="brand-subtitle">Talo y Randy usage only</p>
+        </div>
+
+        <!-- Replace this CSS alien with your own logo later if desired -->
+        <img src="boba.svg" alt="Logo" width="60">
+  </header>
+
+  <main class="container">
+
+    <section class="visually-hidden">
+      <label class="visually-hidden" for="searchInput">Search prompts</label>
+      <input id="searchInput" class="form-control search-box"
+             
+             
+             autocomplete="off">
+    </section>
+
+    <nav id="libraryNav" class="library-nav" aria-label="Prompt categories">
+      <a class="nav-pill active" href="#edit-refine">Editar diseño</a>
+      <a class="nav-pill" href="#stencil">Diseno desde cero</a>
+
+      <!-- Esto queda aquí pero no se muestra 
+      <a class="nav-pill" href="#style-technique">Style &amp; Technique</a>
+      <a class="nav-pill" href="#composition">Composition &amp; Placement</a>
+      <a class="nav-pill" href="#master-prompts">Master Prompts</a> -->
+    </nav>
+
+    <div id="library"></div>
+
+    <div id="noResults" class="no-results">
+      <strong>No prompts found.</strong><br>
+      Try another keyword or category.
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container d-flex justify-content-between flex-wrap gap-2">
+      <span>Rosko Jenkins</span>
+      <span>Personal Tattoo AI Toolkit</span>
+    </div>
+  </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/*
+=========================================================
+ROSKO JENKINS — PROMPT DATABASE
+=========================================================
+
+ADD NEW PROMPTS HERE.
+
+Each prompt uses:
+title
+category
+subcategory
+description
+prompt
+negative
+tags
+
+The page automatically creates the cards.
+*/
+
+const prompts = [
+
+  {
+    title: "Animal realistic designs",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Crear disenos realistas de animales, cambiando solo el nombre del animal",
+    prompt: `Create a **hyper-realistic black and grey tattoo design of a [ANIMAL]**, specifically designed as a professional tattoo reference and stencil.
+
+The animal must have **extremely realistic anatomy, proportions, fur/skin texture, facial structure and natural expression**. Preserve the recognizable characteristics of the species and make the animal the main focal point.
+
+### TATTOO SHADING STRUCTURE
+
+The design must have **clearly defined and intentional shadow masses**, created specifically for tattooing.
+
+Use a strong hierarchy of values:
+
+* **Deep black:** deepest shadows, overlaps, eye sockets, anatomical recesses and selected focal areas.
+* **Dark gray:** major secondary shadows that define the animal's three-dimensional form.
+* **Mid gray:** transitional shading that creates realistic volume.
+* **Negative space / white:** strategically preserved highlights and areas of light.
+
+The shadows must be **clearly separated and easy to identify**, rather than appearing as a flat photographic gradient.
+
+Do not make the entire design uniformly gray. Create distinct dark, midtone and negative-space zones so the tattoo artist can immediately understand where each value belongs.
+
+The result should look realistic from a distance but also have a **clear tattooable value structure** when viewed closely.
+
+### REALISM
+
+Use realistic directional shading that follows the anatomy of the animal.
+
+Fur, feathers, scales or skin should follow the natural growth direction and anatomical structure of the [ANIMAL].
+
+Avoid excessive micro-detail that would disappear when tattooed.
+
+Prioritize:
+**anatomy → silhouette → major shadows → secondary shadows → texture → highlights.**
+
+### MOVEMENT / WIND ELEMENTS
+
+Surround and partially frame the animal with **elegant flowing negative-space wind lines**, similar to the sweeping empty curves frequently used in high-end black-and-grey tattoo compositions.
+
+These should NOT look like drawn outlines.
+
+Instead, create **long, organic, curved spaces between areas of shading**, giving the composition a sense of wind, motion and flow.
+
+The wind elements should:
+
+* Flow naturally around the animal.
+* Follow the direction of its movement or pose.
+* Create visual rhythm.
+* Separate large black and gray masses.
+* Incorporate intentional negative space.
+* Add movement without distracting from the animal.
+
+Use a combination of **thin flowing negative-space gaps and broader curved empty areas**.
+
+The wind should feel integrated into the composition rather than added as decorative lines afterward.
+
+### COMPOSITION
+
+Create a dynamic vertical tattoo composition with the [ANIMAL] as the dominant focal point.
+
+Use an organic composition with asymmetry, natural flow and strong visual movement.
+
+Allow some areas of the design to fade naturally into negative space.
+
+Do not place the animal inside a rigid frame.
+
+Do not use a background scene unless it is absolutely necessary.
+
+The overall design should feel like a **premium black-and-grey realism tattoo**, suitable for an experienced tattoo artist.
+
+### FINAL TATTOO REQUIREMENTS
+
+Professional black-and-grey realism tattoo reference.
+
+High contrast.
+
+Clearly separated shadow masses.
+
+Readable negative space.
+
+Strong silhouette.
+
+Realistic anatomy.
+
+Controlled detail.
+
+Tattoo-friendly shading.
+
+No photographic background.
+
+No color.
+
+No cartoon style.
+
+No artificial outlines around the animal.
+
+No excessive tiny details.
+
+No muddy gray areas.
+
+No random black patches.
+
+The final image must look like a **finished tattoo design/reference**, not simply a photograph of a [ANIMAL].
+
+**IMPORTANT:** Keep the shadow shapes clearly visible and intentionally designed so the artist can translate them into tattoo shading without guessing where the major dark areas belong.
+`,
+    negative: `NO redesign, NO reinterpretation, NO restyling, NO new elements, NO altered proportions, NO changed dimensions, NO changed composition, NO added details, NO removed tattoo details, NO invented information, NO color, NO skin texture, NO photographic background, NO environmental shadows, NO glare, NO reflections, NO 3D effects, NO mockup, NO tattoo shown on skin.`,
+    tags: ["stencil", "extract", "clean", "preserve", "shading"]
+  },
+
+
+  
+ {
+    title: "Any idea in black and gray",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Leame la mente",
+    prompt: `CREATE ONE ORIGINAL PROFESSIONAL TATTOO DESIGN BASED ON THIS IDEA:
+
+[SUBJECT / IDEA]
+
+Transform this idea into a COMPLETE, ORIGINAL, TATTOO-READY DESIGN and create the PROFESSIONAL STENCIL OF THAT EXACT SAME DESIGN.
+
+---
+
+# 1. ONE DESIGN + ONE EXACT STENCIL
+
+I want ONE SINGLE TATTOO DESIGN.
+
+VERSION 1:
+The final tattoo artwork.
+
+VERSION 2:
+The EXACT SAME DESIGN converted into a professional tattoo stencil.
+
+DO NOT create two different compositions.
+
+DO NOT redesign the subject for the stencil.
+
+The stencil must be a technical translation of the final artwork.
+
+Both versions must have exactly the same:
+
+* Subject
+* Pose
+* Anatomy
+* Proportions
+* Composition
+* Perspective
+* Movement
+* Overlapping elements
+* Shadows
+* Decorative elements
+* Negative-space structure
+
+The only difference is that Version 2 is simplified into tattoo-ready linework and clearly defined shading areas.
+
+---
+
+# 2. MOST IMPORTANT — MAKE IT LOOK HAND-DESIGNED, NOT AI-GENERATED
+
+The final design MUST NOT LOOK LIKE AI ART.
+
+It should look like an ORIGINAL DESIGN CREATED BY AN EXPERIENCED PROFESSIONAL TATTOO ARTIST.
+
+Avoid the typical AI appearance:
+
+* Perfect symmetry
+* Perfectly smooth shapes
+* Generic ornamental details
+* Repetitive patterns
+* Random decorative elements
+* Excessive detail
+* Over-rendering
+* Plastic surfaces
+* Artificial anatomy
+* Unrealistic textures
+* Excessive highlights
+* Digital-looking gradients
+* Generic stock illustration appearance
+
+Instead use:
+
+* Natural hand-drawn shapes
+* Intentional asymmetry
+* Organic curves
+* Natural imperfections
+* Confident linework
+* Strong artistic decisions
+* Controlled simplification
+* Natural variation in line weight
+* Realistic tattoo construction
+
+The artwork should feel like a tattoo artist drew it specifically for a client.
+
+It should look DESIGNED, not GENERATED.
+
+---
+
+# 3. DO NOT MAKE THE DESIGN FLAT
+
+This is extremely important.
+
+The design MUST have DEPTH, MOVEMENT, DIMENSION AND VISUAL FLOW.
+
+Do NOT create a flat front-facing illustration.
+
+Create a dynamic composition using:
+
+* Perspective
+* Foreshortening when appropriate
+* Overlapping elements
+* Foreground / middle ground / background
+* Size variation
+* Layering
+* Directional movement
+* Curved lines
+* Asymmetrical composition
+* Diagonal movement
+* Natural body positioning
+* Controlled negative space
+
+The subject should feel like it is MOVING through the composition.
+
+Avoid static poses unless the subject naturally requires one.
+
+Avoid placing everything on the same visual plane.
+
+Use overlapping elements to create depth.
+
+Some elements should visually come forward while others recede.
+
+---
+
+# 4. CREATE VISUAL FLOW
+
+The viewer's eye should naturally travel through the entire design.
+
+Create a clear visual path:
+
+PRIMARY FOCAL POINT
+→ SECONDARY ELEMENTS
+→ SUPPORTING DETAILS
+→ NEGATIVE SPACE
+
+Use the shape of the subject and surrounding elements to create movement.
+
+Curves, diagonals, flowing anatomy, wind, fabric, smoke, water, foliage or other environmental elements may be used when appropriate.
+
+Do NOT add random elements simply to create movement.
+
+Movement must come naturally from the subject and concept.
+
+---
+
+# 5. ADAPT THE IDEA INTELLIGENTLY
+
+Use:
+
+[SUBJECT / IDEA]
+
+as the starting concept.
+
+Interpret it creatively while preserving its identity.
+
+Do not simply place the subject in the center of the canvas.
+
+Design a COMPLETE TATTOO COMPOSITION around the idea.
+
+If additional elements are needed, choose elements that naturally support the subject.
+
+Every element must have a purpose.
+
+Do not add random objects.
+
+---
+
+# 6. STRONG SILHOUETTE
+
+The tattoo must have a strong and recognizable silhouette.
+
+The subject should remain identifiable even when viewed from a distance.
+
+Prioritize:
+
+SILHOUETTE
+→ COMPOSITION
+→ LINEWORK
+→ SHADING
+→ DETAILS
+
+Do not sacrifice readability for unnecessary complexity.
+
+---
+
+# 7. LINEWORK
+
+Use professional tattoo linework.
+
+Create a clear hierarchy:
+
+PRIMARY OUTLINES:
+Strong and confident.
+
+SECONDARY LINES:
+Medium-weight structural details.
+
+FINE LINES:
+Used only where necessary.
+
+Do not make every line identical.
+
+Use line-weight variation to create depth and hierarchy.
+
+Avoid excessive micro-lines.
+
+Avoid extremely thin details that would be difficult to tattoo or disappear after healing.
+
+---
+
+# 8. SHADING — 3RL AND 5RL FOCUSED
+
+The shading should be designed specifically around my preferred tattoo technique.
+
+PRIMARY SHADING TOOLS:
+
+3RL
+5RL
+
+Use these for:
+
+* Stipple shading
+* Pepper shading
+* Whip shading
+* Fine texture
+* Soft transitions
+* Small shadow areas
+* Controlled tonal buildup
+
+Use the shading direction to reinforce the form of the subject.
+
+Do not simply fill areas with random dots.
+
+The dots and lines should follow the anatomy, curvature and volume of the subject.
+
+Darker areas should have greater density.
+
+Lighter areas should have lower density.
+
+Use negative space to create highlights.
+
+---
+
+# 9. MAGNUM USE
+
+A Magnum may be used when appropriate for:
+
+* Larger black areas
+* Efficient black packing
+* Larger smooth shadow areas
+* Large-scale color packing if the design requires it
+
+However, the visual language of the shading should remain compatible with 3RL and 5RL techniques.
+
+Do not make the entire design dependent on large smooth digital gradients.
+
+---
+
+# 10. SHADING MUST CREATE FORM
+
+Shading must describe the three-dimensional structure of the subject.
+
+Do not shade randomly.
+
+Think about:
+
+LIGHT SOURCE
+→ FORM
+→ DEPTH
+→ OVERLAP
+→ SHADOW
+
+Use darker values in recesses and overlapping areas.
+
+Use lighter values and negative space on surfaces facing the light.
+
+The shading should make the subject feel THREE-DIMENSIONAL.
+
+---
+
+# 11. NEGATIVE SPACE
+
+Use negative space intentionally.
+
+Negative space should:
+
+* Create highlights
+* Separate overlapping elements
+* Improve readability
+* Increase contrast
+* Define anatomy
+* Prevent visual clutter
+* Help the tattoo age properly
+
+Do not fill every available area.
+
+Allow the design to breathe.
+
+---
+
+# 12. DEPTH
+
+Create at least three visual levels whenever appropriate:
+
+FOREGROUND:
+Important elements closest to the viewer.
+
+MIDDLE GROUND:
+Main subject and important supporting elements.
+
+BACKGROUND:
+Simplified environmental or decorative elements.
+
+Use overlapping shapes and contrast to establish depth.
+
+Do not make every element equally detailed.
+
+Foreground elements may have stronger lines and more detail.
+
+Background elements should be simplified.
+
+---
+
+# 13. TATTOOABILITY
+
+DESIGN FOR REAL SKIN, NOT FOR A DIGITAL SCREEN.
+
+Avoid:
+
+* Microscopic details
+* Extremely tight spaces
+* Unnecessary texture
+* Hundreds of tiny lines
+* Excessively complicated shading
+* Details that disappear after healing
+* Overlapping elements that become visually unreadable
+
+Keep important areas separated.
+
+Maintain enough breathing room.
+
+The design must remain readable after healing.
+
+A simpler, stronger tattoo is better than an over-detailed tattoo that will age poorly.
+
+---
+
+# 14. STENCIL
+
+After creating the final design, create the stencil of THAT EXACT DESIGN.
+
+The stencil must include:
+
+* Main outer contours
+* Important interior contours
+* Structural lines
+* Overlapping boundaries
+* Black-area boundaries
+* Shadow boundaries
+* Important negative-space areas
+* Essential details required for tattooing
+
+Keep the stencil CLEAN, SIMPLE AND PROFESSIONAL.
+
+Do NOT turn every shading dot into a complicated pattern.
+
+Do NOT reproduce every texture.
+
+Do NOT create hundreds of unnecessary lines.
+
+The stencil should communicate the structure of the tattoo immediately.
+
+It should look like an actual professional tattoo transfer sheet.
+
+---
+
+# 15. STENCIL SHADING MAP
+
+Clearly indicate the areas intended for:
+
+SOLID BLACK
+
+DARK SHADING
+
+PEPPER / STIPPLE SHADING
+
+WHIP SHADING
+
+NEGATIVE SPACE
+
+The shading map should be simple enough that a tattoo artist can understand it immediately.
+
+Do not use digital blur as a substitute for shading information.
+
+---
+
+# 16. NATURAL TATTOO ARTIST AESTHETIC
+
+The final artwork should have the feeling of a professional tattoo artist's original drawing.
+
+Think:
+
+HAND-DRAWN
+→ TATTOO FLASH
+→ ORIGINAL COMPOSITION
+→ NATURAL IMPERFECTIONS
+→ STRONG DESIGN DECISIONS
+→ REAL TATTOOABILITY
+
+Avoid the appearance of:
+
+AI concept art
+Digital stock illustration
+3D render
+Video-game artwork
+Generic fantasy illustration
+Perfect vector artwork
+
+The design should feel personal and intentionally drawn.
+
+---
+
+# 17. NO UNNECESSARY COMPLEXITY
+
+Do not add details just because they are possible.
+
+Every:
+
+LINE
+SHADOW
+DOT
+COLOR
+TEXTURE
+DECORATIVE ELEMENT
+
+must have a purpose.
+
+Prioritize:
+
+COMPOSITION
+→ MOVEMENT
+→ DEPTH
+→ SILHOUETTE
+→ READABILITY
+→ TATTOOABILITY
+
+over excessive detail.
+
+---
+
+# 18. FINAL PRESENTATION
+
+Show ONLY TWO VERSIONS:
+
+A. FINAL TATTOO DESIGN
+
+The complete finished tattoo artwork based on:
+
+[SUBJECT / IDEA]
+
+B. EXACT PROFESSIONAL STENCIL
+
+The same design converted into a clean tattoo stencil.
+
+Both versions must match exactly.
+
+White or clean neutral background.
+
+No skin mockup.
+
+No arm.
+
+No tattoo machine.
+
+No tattoo artist.
+
+No hands.
+
+No unnecessary objects.
+
+No watermark.
+
+No random text.
+
+---
+
+# FINAL QUALITY CHECK
+
+Before generating the final design, verify:
+
+DOES THE SUBJECT LOOK NATURAL?
+
+DOES IT HAVE A STRONG SILHOUETTE?
+
+DOES IT HAVE REAL DEPTH?
+
+DOES IT HAVE FOREGROUND, MIDDLE GROUND AND BACKGROUND?
+
+DOES THE COMPOSITION HAVE MOVEMENT?
+
+DO THE SHADOWS FOLLOW THE FORM?
+
+CAN THE SHADING BE EXECUTED WITH 3RL AND 5RL?
+
+IS THE NEGATIVE SPACE INTENTIONAL?
+
+IS THE DESIGN EASY TO READ?
+
+CAN A REAL TATTOO ARTIST ACTUALLY TATTOO IT?
+
+DOES IT LOOK HAND-DRAWN?
+
+DOES IT AVOID THE TYPICAL AI-GENERATED APPEARANCE?
+
+MOST IMPORTANT:
+
+MAKE IT LOOK LIKE A REAL PROFESSIONAL TATTOO ARTIST DESIGNED THIS PIECE FROM SCRATCH FOR A CLIENT.
+
+NOT AI ART.
+
+NOT A DIGITAL ILLUSTRATION.
+
+NOT A GENERIC STOCK DESIGN.
+
+NOT FLAT.
+
+NOT STATIC.
+
+NOT OVERLY PERFECT.
+
+MAKE IT DYNAMIC, ORGANIC, THREE-DIMENSIONAL, HAND-DRAWN AND READY TO TATTOO.
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+
+
+    {
+    title: "Filigramas",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Ornamento de relleno",
+    prompt: `Create a **traditional Catholic ornamental filigree tattoo design** intended specifically for filling negative spaces and connecting elements within a religious tattoo composition.
+
+The design should feel like **real hand-drawn tattoo ornamentation**, inspired by traditional Catholic and Baroque religious ornament, engraving, antique church decoration, carved wood, wrought iron ornament, and classical ornamental scrollwork.
+
+## 1. OVERALL STYLE
+
+Create elegant, intricate **Catholic ornamental filigree** featuring:
+
+* Baroque scrollwork.
+* Organic curls and flourishes.
+* Classical ornamental leaves.
+* Fine ornamental stems.
+* Elegant S-curves.
+* C-shaped and S-shaped scrolls.
+* Small acanthus-inspired leaves.
+* Subtle ornamental flourishes.
+* Natural organic connections.
+* Balanced negative space.
+* Layered ornamental depth.
+
+The ornament should feel appropriate for:
+
+* Catholic religious tattoos.
+* Virgin Mary tattoos.
+* Jesus tattoos.
+* Sacred Heart tattoos.
+* Cross tattoos.
+* Angel tattoos.
+* Religious sleeves.
+* Chest pieces.
+* Forearm compositions.
+* Background fillers.
+* Connecting elements between larger tattoo subjects.
+
+Avoid making it look like generic decorative wallpaper.
+
+It should look specifically like **tattoo ornamentation designed to complement religious imagery**.
+
+---
+
+# 2. NATURAL HAND-DRAWN APPEARANCE — NO AI LOOK
+
+The design must look like it was **drawn by an experienced tattoo artist by hand**.
+
+Do NOT create the typical AI-generated ornamental appearance.
+
+Avoid:
+
+* Perfect mathematical symmetry.
+* Mechanical repetition.
+* Identical leaves.
+* Identical curls.
+* Perfectly mirrored elements.
+* Excessively smooth vector curves.
+* Plastic-looking surfaces.
+* Random micro-details.
+* Overly complex ornamental noise.
+* Generic AI tattoo flash.
+* Computer-generated geometric patterns.
+* Unrealistically perfect spacing.
+
+The ornament should contain **controlled natural variation**.
+
+Curves should flow organically.
+
+Leaves should have subtle differences in size, orientation and shape.
+
+The design should feel intentional but **human-drawn rather than algorithmically generated**.
+
+---
+
+# 3. FLOW AND MOVEMENT
+
+The filigree must have **movement**.
+
+Do not create a flat collection of decorative shapes.
+
+The ornament should visually flow through the composition using:
+
+* S-curves.
+* C-curves.
+* Spirals.
+* Directional stems.
+* Overlapping elements.
+* Gradual changes in scale.
+* Areas of compression and expansion.
+
+The eye should naturally follow the ornament.
+
+The design should feel as though the filigree is **growing and flowing around the religious subject**.
+
+---
+
+# 4. COMPOSITION
+
+Create a strong hierarchy.
+
+Use:
+
+* Larger primary flourishes.
+* Medium secondary curls.
+* Smaller tertiary details.
+
+Do NOT make every element equally important.
+
+Allow some areas to breathe.
+
+Use negative space intentionally.
+
+The ornament should be suitable for filling spaces around a larger tattoo without visually overpowering the main subject.
+
+---
+
+# 5. LINEWORK
+
+Create clear tattoo-friendly linework.
+
+Use:
+
+* Stronger primary contour lines.
+* Medium structural lines.
+* Fine secondary details.
+
+The line hierarchy should be appropriate for tattooing with:
+
+**3RL and 5RL.**
+
+Do not make every line the same thickness.
+
+Do not create unnecessarily microscopic details that would disappear when tattooed.
+
+Avoid excessive line density.
+
+Every line should have a purpose.
+
+---
+
+# 6. SHADING
+
+Add clearly defined shadow areas designed specifically for:
+
+* Whip shading.
+* Stipple shading.
+* Pointillism.
+
+The shadows should follow the natural curvature of the ornamental forms.
+
+Place deeper shadows:
+
+* Under overlapping leaves.
+* Inside deeper curls.
+* Where stems overlap.
+* At intersections.
+* Under folded leaves.
+* Where ornamental elements pass behind each other.
+* In recessed areas.
+
+Keep the outer surfaces lighter.
+
+This should create a **three-dimensional engraved/baroque appearance** without using digital airbrush gradients.
+
+---
+
+# 7. VALUE SEPARATION
+
+Create an easy-to-read value system:
+
+### VALUE 1 — WHITE
+
+Untouched skin.
+
+No shading.
+
+### VALUE 2 — LIGHT SHADOW
+
+Very sparse stippling.
+
+Suitable for light 3RL whip shading.
+
+### VALUE 3 — MID SHADOW
+
+Medium-density stippling.
+
+Suitable for controlled 3RL/5RL shading.
+
+### VALUE 4 — DEEP SHADOW
+
+Dense stippling and stronger whip shading.
+
+Used primarily in overlaps and recessed areas.
+
+### VALUE 5 — TRUE BLACK
+
+Very limited solid black.
+
+Use only in the deepest structural recesses where necessary.
+
+Do NOT turn the entire ornament into blackwork.
+
+---
+
+# 8. STENCIL VERSION
+
+After creating the ornamental design, create a **clean tattoo stencil version** of the exact same design.
+
+The stencil must preserve:
+
+* Every important contour.
+* Every structural line.
+* Important leaf edges.
+* Major overlaps.
+* Shadow boundaries.
+* Areas of deeper saturation.
+
+Do NOT redesign the stencil.
+
+The stencil must be a **direct technical translation of the original ornamental design**.
+
+---
+
+# 9. SHADOW MAP FOR THE STENCIL
+
+Make the shadows extremely easy to distinguish.
+
+Use a visual system:
+
+**Blank white = untouched skin**
+
+**Sparse dots = light shadow**
+
+**Medium-density dots = mid shadow**
+
+**Dense dots = deep shadow**
+
+**Solid black = deepest recesses only**
+
+The stipple density should clearly communicate how much saturation should be built in each area.
+
+The pattern should be clean and intentional.
+
+Do NOT use random digital noise.
+
+---
+
+# 10. TATTOO TECHNIQUE
+
+The final design must be realistic to execute using:
+
+* 3RL.
+* 5RL.
+* Whip shading.
+* Stipple shading.
+* Pointillism.
+* Gradual saturation buildup.
+
+Do not design it as if it will be tattooed with a large magnum.
+
+Avoid soft airbrush-style gradients.
+
+Avoid impossible micro-details.
+
+Make the design **actually tattooable**.
+
+---
+
+# 11. CATHOLIC / BAROQUE CHARACTER
+
+The ornament should have the visual language of classical Catholic ornamentation:
+
+* Baroque elegance.
+* Church architecture.
+* Antique religious engraving.
+* Classical European ornament.
+* Carved altar decoration.
+* Ornamental religious frames.
+* Sacred art detailing.
+
+It should feel **old, elegant, dramatic and sacred**, rather than modern, futuristic or generic.
+
+---
+
+# 12. NO GENERIC AI ORNAMENT
+
+Do NOT generate:
+
+* Generic mandala patterns.
+* Modern geometric filigree.
+* Paisley patterns.
+* Generic floral wallpaper.
+* Random symmetrical ornaments.
+* Repetitive vector patterns.
+* Decorative borders with no tattoo purpose.
+* Excessively ornate designs that cannot be tattooed.
+
+The result should look like **professional tattoo ornamentation**, not a stock graphic.
+
+---
+
+# 13. FINAL RESULT
+
+Generate:
+
+**A highly detailed but tattooable Catholic Baroque ornamental filigree design, with natural hand-drawn movement, strong line hierarchy, controlled stipple and whip-shading areas, and a clean professional stencil/value map.**
+
+The ornament should look **hand-drawn, organic, slightly imperfect, elegant and intentionally designed for tattooing**.
+
+It must not look AI-generated.
+
+### ABSOLUTE PRIORITY:
+
+**HAND-DRAWN APPEARANCE → NATURAL FLOW → TATTOOABILITY → STRONG LINE HIERARCHY → CLEAR SHADOW VALUES → CATHOLIC/BAROQUE CHARACTER**
+
+**Do not make it look like digital vector art.**
+
+**Do not make it look AI-generated.**
+
+**Make it look like an experienced tattoo artist designed and prepared it manually.**
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+
+
+     
+
+     {
+    title: "Relleno nubes",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "relleno nubes ",
+    prompt: `**Create a highly realistic tattoo stencil/reference sheet of atmospheric clouds designed specifically for tattooing.**
+
+Create several overlapping, voluminous clouds with a **hyper-realistic three-dimensional appearance**, similar to the realistic clouds commonly used as filler/background in black-and-grey tattoos.
+
+The clouds must have:
+
+* Extremely realistic volume, depth and natural formations.
+* Clearly defined **shadow masses** underneath and between the clouds.
+* Distinct midtone areas that can be easily identified while tattooing.
+* Strong but smooth transitions from dark shadows to midtones and highlights.
+* Natural, irregular cloud edges — avoid perfectly round or cartoon-like shapes.
+* Layered clouds with foreground, middle-ground and background depth.
+* Realistic atmospheric perspective.
+* Soft, organic gradients while maintaining enough structure to understand where each shadow should be tattooed.
+
+**IMPORTANT — TATTOO STENCIL REQUIREMENTS:**
+Make the design look like a professional **black-and-grey tattoo stencil/reference**, not a normal cloud photograph.
+
+Clearly map the values:
+
+1. **Deep black / darkest areas:** main shadow pockets and deepest overlaps.
+2. **Dark gray:** secondary shadows and structural areas.
+3. **Medium gray:** transition and volume areas.
+4. **White:** highlights and areas that should remain mostly untouched.
+
+The shadow shapes must be **clearly distinguishable**, so a tattoo artist can immediately understand where to place the darkest ink, where to leave negative space, and how to transition between values.
+
+Use clean tonal separation without losing the realistic appearance.
+
+**Composition:**
+A large flowing group of clouds filling the entire composition, suitable for use as a tattoo filler/background. The clouds should flow naturally from one another and have enough open areas between major forms to make the design readable when transferred to skin.
+
+**Style:**
+Hyper-realistic black-and-grey tattoo reference, realistic atmospheric clouds, professional tattoo design, smooth shading, high contrast, dramatic volumetric lighting, natural cloud anatomy, highly detailed, realistic depth.
+
+**Avoid:**
+Cartoon clouds, anime style, simple line-art clouds, flat clipart, symmetrical clouds, excessive tiny details, random black spots, photographic noise, overly soft shadows that become impossible to distinguish, and completely black cloud masses.
+
+**Final result:** a clean, high-resolution tattoo-ready cloud reference where the **shadow structure is clearly visible and easy to follow during tattooing**, while still looking hyper-realistic. Make the shadow boundaries slightly more defined than in a normal photograph, specifically so the tattoo artist can identify each shading zone while working. Do not outline the clouds; define their structure through value separation
+
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+
+
+
+    {
+    title: "Irezumi Tradicional",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Disenos Japoneses Koi, Hanya Mask etc ",
+    prompt: `CREATE ONE ORIGINAL TRADITIONAL JAPANESE IREZUMI TATTOO DESIGN BASED ON:
+
+[SUBJECT / IDEA]
+
+## CRITICAL INSTRUCTION
+
+I WANT ONE SINGLE TRADITIONAL IREZUMI TATTOO DESIGN AND THE PROFESSIONAL STENCIL OF THAT EXACT SAME DESIGN.
+
+DO NOT CREATE TWO DIFFERENT DESIGNS.
+
+VERSION 1 = FINAL TRADITIONAL IREZUMI TATTOO DESIGN.
+
+VERSION 2 = THE EXACT SAME DESIGN CONVERTED INTO A CLEAN, PROFESSIONAL TATTOO STENCIL.
+
+The stencil must be a technical breakdown of the final design, NOT a reinterpretation.
+
+Both versions must have IDENTICAL:
+
+* Subject
+* Anatomy
+* Pose
+* Composition
+* Proportions
+* Silhouette
+* Background elements
+* Movement
+* Decorative elements
+* Major shadows
+
+Only the rendering method changes.
+
+---
+
+# MOST IMPORTANT — AUTHENTIC TRADITIONAL IREZUMI
+
+The design must look like AUTHENTIC TRADITIONAL JAPANESE IREZUMI.
+
+It must feel like a piece created by an experienced Japanese tattoo artist who understands traditional Horimono and Irezumi composition.
+
+DO NOT create generic "Japanese-inspired" artwork.
+
+DO NOT create anime.
+
+DO NOT create manga.
+
+DO NOT create Neo-Traditional.
+
+DO NOT create Japanese realism.
+
+DO NOT create a modern digital illustration with Japanese elements.
+
+DO NOT combine unrelated tattoo styles.
+
+The final design should feel HISTORIC, TRADITIONAL, HAND-DRAWN AND TATTOO-BASED.
+
+---
+
+# ANTI-AI APPEARANCE
+
+The design MUST NOT LOOK AI-GENERATED.
+
+Avoid:
+
+* Perfect symmetry
+* Perfectly smooth digital rendering
+* Generic AI ornamentation
+* Repetitive patterns
+* Random decorative details
+* Excessive micro-details
+* Overly polished digital surfaces
+* Photorealistic textures
+* Artificial anatomy
+* Excessive highlights
+* Plastic-looking scales
+* Perfectly repeated waves
+* Generic fantasy artwork
+
+Instead, use:
+
+* Hand-drawn irregularities
+* Natural asymmetry
+* Traditional Japanese line rhythm
+* Confident brush-like contours
+* Simplified but powerful anatomy
+* Organic background movement
+* Intentional negative space
+* Traditional tattoo composition
+* Strong graphic shapes
+* Natural variation in line weight
+
+The result should look like an ORIGINAL HAND-DRAWN TATTOO DESIGN created by a master tattoo artist.
+
+It should feel drawn with traditional tattoo design techniques rather than generated as digital concept art.
+
+---
+
+# TRADITIONAL IREZUMI COMPOSITION
+
+Use traditional Japanese tattoo composition principles.
+
+The main subject must have strong movement and visual direction.
+
+The subject should NOT simply face forward like a character illustration.
+
+Create dynamic movement through:
+
+* Body position
+* Flowing anatomy
+* Curved composition
+* Direction of the head
+* Direction of limbs
+* Wind
+* Water
+* Clouds
+* Foliage
+* Background movement
+
+The background must support the main subject rather than compete with it.
+
+The composition should feel designed for the human body.
+
+---
+
+# SUBJECT
+
+Transform:
+
+[SUBJECT / IDEA]
+
+into an authentic Irezumi subject.
+
+Preserve the recognizable identity of the subject while adapting its anatomy and pose to traditional Japanese tattoo design.
+
+If the subject is an animal:
+
+Emphasize:
+
+* Powerful anatomy
+* Dynamic posture
+* Strong facial expression
+* Traditional Japanese stylization
+* Natural movement
+* Clear silhouette
+
+If the subject is a mythical creature:
+
+Use traditional Japanese visual language rather than Western fantasy design.
+
+If the subject is a human figure:
+
+Use traditional Japanese tattoo anatomy and composition.
+
+Do not make the figure look like an anime character.
+
+---
+
+# LINEWORK
+
+Use strong traditional Japanese tattoo linework.
+
+The outlines should feel confident and deliberate.
+
+Use variation in line weight.
+
+Important contours should be stronger.
+
+Interior details should be simpler.
+
+Avoid excessive thin lines.
+
+Avoid mechanical vector-like outlines.
+
+The linework should feel like it was drawn by hand with a traditional tattoo brush.
+
+Use flowing, expressive contours.
+
+---
+
+# BLACKWORK
+
+Traditional Irezumi depends heavily on strong black areas.
+
+Use:
+
+* Solid black
+* Bold outlines
+* Controlled black background
+* Black pattern elements
+* Strategic negative space
+
+Do not make the entire piece grey.
+
+Do not use photorealistic black-and-grey rendering.
+
+Black should create structure, depth and contrast.
+
+---
+
+# COLOR PALETTE
+
+Use a traditional Japanese tattoo palette.
+
+Prefer a restrained palette such as:
+
+* Black
+* Red
+* Deep orange
+* Muted yellow
+* Deep blue
+* Dark green
+
+Use ONLY the colors necessary for the subject.
+
+Avoid excessive color variety.
+
+The design should still look traditional even when viewed primarily as blackwork.
+
+Colors should be strong, flat and tattoo-friendly.
+
+Avoid neon colors.
+
+Avoid modern pastel palettes.
+
+Avoid glossy digital color.
+
+---
+
+# SHADING
+
+Use traditional tattoo-friendly shading.
+
+Prioritize:
+
+* Solid black
+* Bold grey transitions
+* Controlled color shading
+* Negative-space highlights
+* Traditional Japanese patterning
+
+Avoid:
+
+* Airbrush shading
+* Photorealistic gradients
+* Smooth digital rendering
+* Excessive soft shadows
+* Hyper-realistic lighting
+
+Shading should look hand-applied and graphic.
+
+---
+
+# BACKGROUND
+
+Use traditional Japanese background elements appropriate to the subject.
+
+Possible elements include:
+
+* Wind bars
+* Water
+* Waves
+* Clouds
+* Smoke
+* Rocks
+* Maple leaves
+* Cherry blossoms
+* Peonies
+* Chrysanthemums
+* Bamboo
+* Foliage
+
+ONLY use elements that naturally belong with the subject.
+
+Do not randomly combine every Japanese element.
+
+The background should create movement and connect the composition.
+
+---
+
+# NEGATIVE SPACE
+
+Use negative space deliberately.
+
+Do not fill every area.
+
+Negative space should help:
+
+* Separate the subject from the background
+* Improve readability
+* Create rhythm
+* Define important anatomy
+* Allow the tattoo to age properly
+
+The design should breathe.
+
+---
+
+# BODY-AWARE COMPOSITION
+
+Think like a traditional Irezumi tattoo artist designing directly for the human body.
+
+The composition should be adaptable to:
+
+* Full sleeve
+* Half sleeve
+* Back piece
+* Chest
+* Thigh
+* Calf
+* Shoulder
+
+The subject and background should flow naturally around body contours.
+
+Avoid compositions that only look good inside a rectangular image.
+
+---
+
+# TATTOOABILITY
+
+DESIGN FOR REAL SKIN, NOT FOR A DIGITAL SCREEN.
+
+Every line and detail must have a realistic tattooing purpose.
+
+Avoid:
+
+* Microscopic details
+* Extremely tight spacing
+* Tiny scales
+* Hundreds of individual hairs
+* Excessive texture
+* Unnecessary linework
+* Details that will disappear after healing
+
+The design must remain readable and powerful after healing.
+
+---
+
+# NEEDLE CONSIDERATION
+
+Design with practical tattoo execution in mind.
+
+3RL:
+
+Fine traditional details and small interior elements.
+
+5RL:
+
+Secondary structural details and medium-weight lines.
+
+MAGNUM:
+
+Large black areas, background work, color packing and controlled shading.
+
+The design should allow clear separation between linework, blackwork, color and negative space.
+
+---
+
+# STENCIL — EXACT SAME DESIGN
+
+After creating the final Irezumi design, create the stencil of THAT EXACT DESIGN.
+
+DO NOT redesign anything.
+
+DO NOT change the anatomy.
+
+DO NOT change the pose.
+
+DO NOT change the background.
+
+DO NOT change the composition.
+
+DO NOT add decorative elements.
+
+DO NOT remove important structural elements.
+
+The stencil must correspond exactly to the final artwork.
+
+---
+
+# STENCIL REQUIREMENTS
+
+The stencil should show:
+
+* Main contours
+* Important interior contours
+* Structural anatomy
+* Black-area boundaries
+* Color boundaries
+* Background boundaries
+* Important negative-space areas
+* Major shading boundaries
+
+Keep the stencil CLEAN, SIMPLE AND PROFESSIONAL.
+
+Do not represent every texture.
+
+Do not turn every scale, feather, hair or wave into hundreds of tiny lines.
+
+Only include information necessary for tattoo execution.
+
+The stencil should look like a real professional tattoo transfer sheet.
+
+---
+
+# FINAL PRESENTATION
+
+Show ONLY:
+
+A. FINAL TRADITIONAL IREZUMI TATTOO DESIGN
+
+B. EXACT CORRESPONDING TATTOO STENCIL
+
+Both must be the SAME DESIGN.
+
+Clean white or neutral background.
+
+No skin.
+
+No arm.
+
+No tattoo machine.
+
+No tattoo artist.
+
+No mockup.
+
+No watermark.
+
+No unnecessary objects.
+
+No additional text.
+
+---
+
+# FINAL AUTHENTICITY CHECK
+
+Before generating the final result, mentally evaluate:
+
+DOES THIS LOOK LIKE TRADITIONAL IREZUMI?
+
+DOES THE COMPOSITION FLOW NATURALLY AROUND THE BODY?
+
+DOES THE SUBJECT HAVE STRONG MOVEMENT?
+
+ARE THE BLACK AREAS POWERFUL?
+
+IS THE NEGATIVE SPACE INTENTIONAL?
+
+ARE THE COLORS RESTRAINED?
+
+DOES THE DESIGN LOOK HAND-DRAWN?
+
+COULD A REAL TATTOO ARTIST ACTUALLY TATTOO THIS?
+
+MOST IMPORTANT:
+
+MAKE IT LOOK LIKE A REAL TRADITIONAL IREZUMI TATTOO DESIGN CREATED BY AN EXPERIENCED JAPANESE TATTOO ARTIST.
+
+NOT AI ART.
+
+NOT DIGITAL CONCEPT ART.
+
+NOT ANIME.
+
+NOT NEO-TRADITIONAL.
+
+NOT REALISM.
+
+NOT A GENERIC "JAPANESE STYLE" ILLUSTRATION.
+
+AUTHENTIC.
+TRADITIONAL.
+HAND-DRAWN.
+TATTOOABLE.
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+
+
+
+
+    {
+    title: "Chicano Lettering",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Crear nombre con letras chicanas fresas ",
+    prompt: `CREATE AN ORIGINAL CHICANO LETTERING TATTOO DESIGN USING THE TEXT “[NAME]”.
+
+The design must be created specifically as a REAL TATTOO DESIGN, with a professional tattoo artist's mindset.
+
+The final result must look HAND-DRAWN, NATURAL, AUTHENTIC, and ARTIST-MADE — NOT AI-GENERATED.
+
+## 1. MAIN LETTERING DESIGN
+
+Create a classic Chicano tattoo lettering composition featuring “[NAME]” as the absolute focal point.
+
+Style:
+
+* Traditional Chicano lettering
+* Classic West Coast Chicano tattoo lettering
+* Hand-drawn tattoo lettering
+* Elegant but masculine
+* Strong black and grey tattoo aesthetic
+* Smooth, flowing letterforms
+* Custom-drawn lettering
+* Natural variations in the letterforms
+* Strong thick-and-thin line contrast
+* Elegant swashes and terminals where appropriate
+* Controlled dimensional shadows
+* Strong visual hierarchy
+* Excellent readability
+
+The lettering must feel like it was individually drawn by an experienced tattoo lettering artist.
+
+DO NOT use generic computer fonts.
+
+DO NOT make the lettering look like a digital font.
+
+DO NOT make every letter perfectly symmetrical.
+
+DO NOT create random decorative elements.
+
+DO NOT overcomplicate the composition.
+
+DO NOT distort the letters just to make them look artistic.
+
+The word “[NAME]” must remain extremely readable.
+
+The design should feel AUTHENTIC, IMPERFECT IN A NATURAL WAY, and HAND-DRAWN.
+
+Avoid the typical overly polished, plastic, symmetrical, AI-generated appearance.
+
+## 2. COMPOSITION
+
+Build the entire composition around “[NAME]”.
+
+The lettering should have natural flow and rhythm.
+
+Use overlapping letters, controlled swashes, flourishes and dimensional shadows only when they improve the composition.
+
+Every decorative element must have a purpose.
+
+Keep enough negative space between important elements so the tattoo remains readable after healing.
+
+The composition should work as an actual tattoo, not merely as a digital illustration.
+
+Prioritize:
+
+READABILITY
+→ FLOW
+→ BALANCE
+→ NEGATIVE SPACE
+→ TATTOOABILITY
+→ LONG-TERM CLARITY
+
+## 3. BLACK AND GREY
+
+Use a traditional black and grey tattoo aesthetic.
+
+No color.
+
+No colorful background.
+
+No photographic realism.
+
+No excessive digital gradients.
+
+Use strong blacks combined with controlled grey values and clean negative space.
+
+The black areas should be intentional and easy to pack.
+
+## 4. SHADING STYLE
+
+Design the shading specifically for hand tattooing.
+
+Use a combination of:
+
+* Stipple shading
+* Pepper shading
+* Whip shading
+* Controlled black packing
+* Negative-space transitions
+
+The shading must look organic and hand-made.
+
+Avoid perfectly uniform digital gradients.
+
+Avoid airbrush effects.
+
+Avoid blurry shadows.
+
+Avoid smooth Photoshop-style gradients.
+
+The transitions should look like something that can realistically be tattooed by hand.
+
+Use:
+
+3RL:
+Fine details, small interior lines, tiny dots, delicate transitions and small decorative elements.
+
+5RL:
+Secondary outlines, stronger interior details and medium-weight structural lines.
+
+MAGNUM:
+Black packing, larger shadow areas and broad whip-shaded transitions.
+
+The design should be technically compatible with these needle groupings.
+
+## 5. SHADOW DESIGN
+
+Create dimensional shadows that follow the natural direction and structure of the lettering.
+
+The shadows must NOT look randomly placed.
+
+They should reinforce the depth and movement of the letters.
+
+Use clear separation between:
+
+* Solid black
+* Dark pepper shading
+* Medium stipple shading
+* Light stipple shading
+* Negative space
+
+Keep the shadow structure simple enough to tattoo efficiently.
+
+## 6. SECOND VERSION — PROFESSIONAL TATTOO STENCIL
+
+After creating the final lettering design, create a SECOND VERSION of the EXACT SAME DESIGN as a professional tattoo stencil.
+
+IMPORTANT:
+
+DO NOT redesign the lettering.
+
+DO NOT change the proportions.
+
+DO NOT change the composition.
+
+DO NOT change the position of the shadows.
+
+DO NOT add new decorative elements.
+
+The stencil must be a technical breakdown of the EXACT SAME DESIGN.
+
+The final lettering and the stencil must match perfectly.
+
+## 7. STENCIL REQUIREMENTS
+
+The stencil must contain:
+
+* Strong solid outer contour lines
+* Important interior lines
+* Structural letter details
+* Clear boundaries for black areas
+* Clear boundaries for shadow areas
+* Negative-space areas
+* Important shading boundaries
+* Essential small details only
+
+Keep the stencil CLEAN, SIMPLE and EASY TO FOLLOW.
+
+Do NOT turn every texture into hundreds of tiny lines.
+
+Do NOT create unnecessary micro-details.
+
+Do NOT make the stencil visually confusing.
+
+The stencil should look like something a professional tattoo artist could print, transfer and tattoo directly.
+
+## 8. SHADING MAP
+
+Represent the shading in a simple tattoo-friendly way.
+
+Clearly indicate where the tattoo artist should use:
+
+BLACK PACKING
+PEPPER SHADING
+STIPPLE SHADING
+WHIP SHADING
+NEGATIVE SPACE
+
+Use organic dot density.
+
+Higher dot density = darker shading.
+
+Lower dot density = lighter shading.
+
+Do not use perfectly uniform dot patterns.
+
+The pepper and stipple texture should look naturally hand-placed.
+
+## 9. LINE WEIGHT HIERARCHY
+
+Create a logical hierarchy of line weights.
+
+PRIMARY LINES:
+Strong, clean and continuous.
+
+SECONDARY LINES:
+Slightly lighter and used only where necessary.
+
+FINE DETAILS:
+Minimal and reserved for important details.
+
+Do not make every line equally thick.
+
+The stencil must communicate which lines are structurally important.
+
+## 10. TATTOOABILITY RULE
+
+This is extremely important:
+
+DESIGN FOR THE TATTOO MACHINE, NOT FOR THE SCREEN.
+
+Every line, shadow and detail must have a realistic tattooing purpose.
+
+Avoid details that will disappear after healing.
+
+Avoid microscopic details.
+
+Avoid excessively tight spacing.
+
+Avoid unnecessary texture.
+
+Avoid overly complex shading.
+
+A simpler design that will heal beautifully is ALWAYS better than a highly detailed design that is difficult to tattoo.
+
+## 11. AUTHENTICITY RULE
+
+The final artwork must NOT look like an AI-generated tattoo reference.
+
+Avoid:
+
+* Perfectly symmetrical letters
+* Generic AI flourishes
+* Repetitive patterns
+* Artificially perfect curves
+* Excessive ornamentation
+* Plastic-looking shading
+* Overly smooth digital gradients
+* Random decorative objects
+* Unnecessary complexity
+
+Instead, create subtle natural imperfections and hand-drawn characteristics.
+
+It should feel like a REAL CHICANO LETTERING ARTIST drew the design with pencil, marker or tattoo pen before preparing it for a tattoo stencil.
+
+## 12. FINAL PRESENTATION
+
+Show TWO clearly separated versions:
+
+A. FINAL TATTOO DESIGN
+
+The complete “[NAME]” Chicano lettering design with black and grey shading, stipple shading, pepper shading and whip shading.
+
+B. PROFESSIONAL TATTOO STENCIL
+
+The EXACT SAME “[NAME]” design converted into a clean tattoo stencil with solid lines, clear shadow boundaries, black-packing areas and simple shading indications.
+
+White or clean neutral background.
+
+No skin mockup.
+
+No arm.
+
+No hand.
+
+No tattoo machine.
+
+No tattoo artist.
+
+No unnecessary objects.
+
+No watermark.
+
+No additional text.
+
+The final result must look like a professional tattoo artist's ORIGINAL DESIGN SHEET AND STENCIL, ready to be printed and prepared for an actual tattoo session.
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+ 
+{
+    title: "Neotradicional",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Neo traditional shit ",
+    prompt: `CREATE ONE ORIGINAL NEO-TRADITIONAL TATTOO DESIGN BASED ON:
+
+[SUBJECT / IDEA]
+
+## CRITICAL INSTRUCTION
+
+I WANT ONE SINGLE TATTOO DESIGN AND THE PROFESSIONAL STENCIL OF THAT EXACT SAME DESIGN.
+
+DO NOT CREATE TWO DIFFERENT DESIGNS.
+
+VERSION 1 = THE FINAL NEO-TRADITIONAL TATTOO DESIGN.
+
+VERSION 2 = THE EXACT SAME DESIGN CONVERTED INTO A CLEAN, PROFESSIONAL TATTOO STENCIL.
+
+The stencil must be a technical translation of the final design, NOT a reinterpretation.
+
+The proportions, pose, composition, silhouette, anatomy, decorative elements and overall structure must remain IDENTICAL between both versions.
+
+---
+
+# MOST IMPORTANT — DO NOT MAKE IT LOOK AI-GENERATED
+
+The final artwork MUST NOT have the typical appearance of an AI-generated illustration.
+
+It should look like an ORIGINAL DESIGN DRAWN BY A REAL, EXPERIENCED NEO-TRADITIONAL TATTOO ARTIST.
+
+Avoid the polished "AI art" appearance.
+
+Avoid:
+
+* Perfect symmetry
+* Unrealistically perfect curves
+* Generic AI ornamentation
+* Repetitive decorative patterns
+* Random details
+* Excessive complexity
+* Over-rendering
+* Plastic-looking surfaces
+* Excessive digital gradients
+* Hyper-realistic textures
+* Generic stock illustration aesthetics
+* Perfectly repeated shapes
+* Unnecessary micro-details
+* Artificial-looking anatomy
+* Excessive highlights
+* Overly glossy rendering
+
+Instead, create:
+
+* Natural hand-drawn shapes
+* Intentional asymmetry
+* Organic curves
+* Slight natural imperfections
+* Confident tattoo-artist linework
+* Strong graphic shapes
+* Deliberate composition
+* Authentic tattoo-flash characteristics
+* Natural variation in line weight
+* Simplified forms designed specifically for tattooing
+
+The design should look as if a professional tattoo artist sketched it by hand with pencil, marker or digital drawing software specifically for a tattoo client.
+
+IT MUST LOOK DESIGNED, NOT GENERATED.
+
+---
+
+# NEO-TRADITIONAL STYLE
+
+Use authentic Neo-Traditional tattoo principles:
+
+* Bold black outlines
+* Controlled line-weight variation
+* Strong silhouettes
+* Stylized anatomy
+* Elegant exaggeration
+* Dramatic shapes
+* Strong blackwork
+* Limited color palette
+* Strategic negative space
+* Graphic shadows
+* Clear visual hierarchy
+* Decorative elements that support the main subject
+
+Do not make it look like a generic illustration.
+
+Do not make it look like realism.
+
+Do not make it look like cartoon art.
+
+It should clearly read as PROFESSIONAL NEO-TRADITIONAL TATTOO ART.
+
+---
+
+# COLOR
+
+Use a maximum of:
+
+3–4 COLORS + BLACK + NEGATIVE SPACE.
+
+Do not exceed four actual colors.
+
+Use a controlled, harmonious tattoo palette.
+
+Colors should be bold and intentional.
+
+Do not use rainbow colors.
+
+Do not use excessive gradients.
+
+Do not make every area colorful.
+
+Allow black and negative space to play an important role.
+
+---
+
+# SHADING
+
+Use graphic Neo-Traditional tattoo shading.
+
+Prioritize:
+
+* Solid black shadows
+* Controlled grey
+* Color shading
+* Simple transitions
+* Negative-space highlights
+
+Avoid photorealistic rendering.
+
+Avoid airbrush effects.
+
+Avoid excessive digital gradients.
+
+The shading must be realistic to execute on real skin.
+
+Consider practical tattoo execution using:
+
+3RL — fine details and small interior lines.
+
+5RL — secondary details and structural lines.
+
+MAGNUM — black packing, color packing and larger shadow areas.
+
+---
+
+# COMPOSITION
+
+Create a strong, intentional tattoo composition.
+
+The main subject must be immediately recognizable.
+
+Use secondary elements only when they improve the composition.
+
+Do not add random flowers, leaves, ornaments, flames or decorative objects simply to fill empty space.
+
+Negative space is intentional.
+
+Do NOT fill every area.
+
+The composition must remain readable from a distance.
+
+---
+
+# TATTOOABILITY
+
+DESIGN FOR REAL SKIN, NOT FOR A DIGITAL SCREEN.
+
+The design must be practical for a professional tattoo artist.
+
+Avoid:
+
+* Microscopic details
+* Extremely tight spaces
+* Excessive texture
+* Unnecessary lines
+* Overly complicated shadows
+* Details that will disappear after healing
+
+Prioritize:
+
+READABILITY
+→ SILHOUETTE
+→ LINEWORK
+→ COLOR SEPARATION
+→ NEGATIVE SPACE
+→ TATTOOABILITY
+
+---
+
+# STENCIL
+
+After completing the final design, create the stencil of THAT EXACT DESIGN.
+
+The stencil must contain:
+
+* Strong outer contour lines
+* Important interior lines
+* Structural details
+* Black-area boundaries
+* Color-area boundaries
+* Shadow boundaries
+* Negative-space boundaries
+* Only the essential details required for tattooing
+
+Keep the stencil CLEAN, SIMPLE AND EASY TO FOLLOW.
+
+Do not convert every texture into tiny lines.
+
+Do not create unnecessary dots or microscopic details.
+
+Do not make the stencil complicated.
+
+The stencil should look like an ACTUAL PROFESSIONAL TATTOO STENCIL.
+
+---
+
+# FINAL OUTPUT
+
+Show ONLY TWO VERSIONS OF THE SAME DESIGN:
+
+1. FINAL NEO-TRADITIONAL TATTOO DESIGN
+
+2. EXACT CORRESPONDING TATTOO STENCIL
+
+Both versions must match perfectly.
+
+Same subject.
+
+Same pose.
+
+Same composition.
+
+Same proportions.
+
+Same silhouette.
+
+Same decorative elements.
+
+Same structural details.
+
+The only difference is that Version 2 is converted into clean stencil linework and clearly defined tattoo areas.
+
+White or clean neutral background.
+
+No skin.
+
+No arm.
+
+No hand.
+
+No tattoo machine.
+
+No tattoo artist.
+
+No mockup.
+
+No watermark.
+
+No additional objects.
+
+No unnecessary text.
+
+FINAL RULE:
+
+THE RESULT MUST LOOK LIKE A REAL PROFESSIONAL NEO-TRADITIONAL TATTOO ARTIST DESIGNED IT BY HAND.
+
+NOT LIKE AI ART.
+
+NOT LIKE A DIGITAL STOCK ILLUSTRATION.
+
+NOT LIKE A GENERIC AI TATTOO.
+
+IT SHOULD LOOK NATURAL, HAND-DRAWN, ORIGINAL, TATTOOABLE AND PROFESSIONALLY COMPOSED.
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+ 
+
+{
+    title: "Manga Completa",
+    category: "Stencil",
+    subcategory: "FROM ZERO TO HERO",
+    description: "Manga completa basada en la idea del cliente ",
+    prompt: `Create a **professional full-sleeve black-and-grey realism tattoo design and tattoo-ready stencil** based ONLY on this theme:
+
+**[SLEEVE THEME]**
+
+Design it as if an experienced professional tattoo artist created the entire sleeve specifically for a real human arm.
+
+The result must look like an **authentic custom tattoo design**, not an AI-generated illustration.
+
+---
+
+# 1. ANATOMICAL SLEEVE COMPOSITION
+
+Design a complete **360-degree full sleeve**, from the shoulder/deltoid to the wrist.
+
+Treat the arm as a three-dimensional canvas.
+
+The composition must naturally follow:
+
+* Deltoid / shoulder
+* Upper arm
+* Bicep
+* Tricep
+* Inner arm
+* Elbow
+* Forearm
+* Inner forearm
+* Outer forearm
+* Wrist
+
+The design must **wrap naturally around the anatomy**.
+
+Major subjects should follow the natural curvature and movement of the arm.
+
+Do not design the sleeve as a flat poster.
+
+Do not simply place individual images beside each other.
+
+Elements must overlap, disappear behind one another and reappear naturally around the arm.
+
+---
+
+# 2. VISUAL HIERARCHY
+
+Create:
+
+**ONE PRIMARY FOCAL ELEMENT**
+
+This should receive the strongest contrast, highest detail and most important placement.
+
+Then create:
+
+**2–4 SECONDARY ELEMENTS**
+
+These support the main subject without competing with it.
+
+Then add:
+
+**SMALL SUPPORTING ELEMENTS**
+
+These should help connect the composition.
+
+Finally use:
+
+**BACKGROUND / FILLER**
+
+to transition naturally between the major elements.
+
+Do not give every element the same level of detail.
+
+Do not make everything equally dark.
+
+The eye should immediately know where to look first.
+
+---
+
+# 3. BLACK & GREY REALISM
+
+Use a sophisticated **black-and-grey realism tattoo value structure**.
+
+Think in terms of tattoo ink rather than photography.
+
+Create clearly separated:
+
+**BLACK**
+
+Deepest structural shadows, overlaps, deepest recesses and selected focal points.
+
+**DARK GREY**
+
+Major secondary shadows that establish three-dimensional form.
+
+**MID GREY**
+
+Controlled transitions and volume.
+
+**LIGHT GREY**
+
+Subtle atmospheric transitions.
+
+**NEGATIVE SPACE**
+
+Skin that remains intentionally untouched and becomes part of the design.
+
+The design must have strong value hierarchy.
+
+Avoid turning everything into a smooth gray photograph.
+
+The artist must be able to look at the reference and immediately understand:
+
+**WHERE TO PACK BLACK**
+
+**WHERE TO SHADE DARK**
+
+**WHERE TO WHIP SHADE**
+
+**WHERE TO PEPPER SHADE**
+
+**WHERE TO LEAVE SKIN**
+
+---
+
+# 4. TATTOOABLE SHADING
+
+Design the shading as if it will actually be tattooed using:
+
+**3RL**
+
+for delicate detail, texture, fur, fine transitions and controlled stippling.
+
+**5RL**
+
+for slightly stronger detail and structural texture.
+
+**MAGNUM / SOFT MAGNUM**
+
+for larger smooth transitions and soft black-and-grey shading.
+
+Use realistic combinations of:
+
+* Whip shading
+* Pendulum shading
+* Pepper shading
+* Stippling
+* Smooth black-and-grey transitions
+* Controlled solid black
+* Selective black packing
+
+Do not make the shading look like digital airbrushing.
+
+The value transitions should have enough structure to be reproducible by a tattoo artist.
+
+---
+
+# 5. SHADOW DESIGN
+
+This is extremely important.
+
+Create **intentional shadow shapes**, not random photographic shadows.
+
+Major shadows should have recognizable boundaries and flow according to anatomy.
+
+Avoid large areas of indistinguishable gray.
+
+The darkest areas should create the structure of the tattoo.
+
+Use black strategically rather than everywhere.
+
+Create visual rhythm:
+
+**BLACK → DARK GREY → MID GREY → SKIN**
+
+and occasionally:
+
+**BLACK → SKIN**
+
+for stronger contrast.
+
+This will create a tattoo that remains readable over time.
+
+---
+
+# 6. REALISM WITHOUT AI LOOK
+
+The design must NOT look excessively perfect.
+
+Introduce natural artistic irregularities.
+
+Avoid:
+
+* Perfect symmetry
+* Perfectly repeated shapes
+* Identical spacing
+* Perfect geometric patterns
+* Plastic textures
+* Unrealistically smooth gradients
+* Excessive micro-detail
+* Artificially sharp edges
+* Generic AI compositions
+* Overly polished digital rendering
+
+Use realistic imperfections in:
+
+* Fur
+* Skin
+* Feathers
+* Scales
+* Flowers
+* Fabric
+* Architecture
+* Organic textures
+
+depending on the subject.
+
+The design should feel like a **hand-developed tattoo composition**.
+
+---
+
+# 7. NATURAL TATTOO FLOW
+
+Create strong visual movement from:
+
+**SHOULDER → UPPER ARM → ELBOW → FOREARM → WRIST**
+
+The elements should visually pull the eye along this path.
+
+Avoid rigid horizontal or vertical divisions.
+
+Use diagonal movement and curved transitions.
+
+Major elements should slightly overlap.
+
+Some elements should disappear behind others.
+
+Some details should fade into negative space.
+
+This should create depth and make the sleeve feel like one unified artwork.
+
+---
+
+# 8. WIND / SMOKE / NEGATIVE SPACE
+
+Integrate **long flowing negative-space wind lines** throughout the sleeve.
+
+These are extremely important.
+
+They should look like intentional empty pathways created by the tattoo artist.
+
+They must:
+
+* Flow around the anatomy.
+* Create movement.
+* Separate black masses.
+* Connect different subjects.
+* Create breathing room.
+* Guide the eye through the sleeve.
+
+Use a mixture of:
+
+**thin flowing negative-space lines**
+
+and
+
+**larger curved negative-space channels.**
+
+Do NOT draw these as black outlines.
+
+They should primarily be created by **skin breaks and negative space**.
+
+Some can partially disappear behind major subjects.
+
+Some can merge into smoke, wind or atmospheric shading.
+
+They should feel organic and slightly irregular.
+
+---
+
+# 9. FILLER PHILOSOPHY
+
+Do not try to fill every empty space.
+
+A professional tattoo needs breathing room.
+
+Use:
+
+* Negative space
+* Smoke
+* Wind
+* Atmospheric shading
+* Small organic elements
+* Tiny supporting details
+* Subtle black textures
+
+only where necessary.
+
+Avoid generic AI filler.
+
+Avoid repeating the same filler everywhere.
+
+Each empty space should either:
+
+**remain intentionally empty**
+
+or
+
+**serve a compositional purpose.**
+
+---
+
+# 10. STENCIL INFORMATION
+
+The final reference must clearly communicate tattoo structure.
+
+Show:
+
+* Important contours
+* Major anatomical boundaries
+* Major shadow shapes
+* Black packing areas
+* Secondary shadow areas
+* Texture direction
+* Overlapping elements
+* Negative-space channels
+* Important highlights
+
+Do NOT outline every object.
+
+Do NOT use cartoon outlines.
+
+The tattoo should rely primarily on:
+
+**VALUE + SHADOW + NEGATIVE SPACE + TEXTURE**
+
+rather than outlines.
+
+---
+
+# 11. AGING / LONGEVITY
+
+Design the tattoo so it remains readable after healing and aging.
+
+Avoid relying on extremely tiny details.
+
+Maintain sufficient separation between major values.
+
+Use larger readable shadow masses.
+
+Use negative space strategically.
+
+Avoid overcrowding.
+
+The design should still communicate its main forms from several feet away.
+
+---
+
+# 12. FINAL ART DIRECTION
+
+Professional:
+
+**BLACK & GREY REALISM**
+
+**CUSTOM TATTOO DESIGN**
+
+**FULL SLEEVE**
+
+**HIGH CONTRAST**
+
+**CONTROLLED NEGATIVE SPACE**
+
+**REALISTIC ANATOMY**
+
+**INTENTIONAL SHADOW MASSES**
+
+**NATURAL ORGANIC FLOW**
+
+**TATTOOABLE DETAIL**
+
+**HAND-DESIGNED APPEARANCE**
+
+The final result should look like something an experienced tattoo artist could actually place on a client's arm.
+
+It must NOT look like:
+
+* AI concept art
+* Digital fantasy artwork
+* A poster
+* A collage
+* A photograph
+* A generic tattoo flash sheet
+
+It should look like a **finished professional custom tattoo composition and stencil reference**.
+
+---
+
+# FINAL INSTRUCTION
+
+Use ONLY this variable as the creative subject:
+
+**[SLEEVE THEME]**
+
+Everything else about the composition, shading, tattoo technique, negative space, anatomy, flow and stencil structure must be determined automatically according to the theme.
+
+Create the sleeve as a **cohesive single tattoo**, not as a collection of unrelated images.
+`,
+    negative: `Lorem Ipsum`, tags: ["stencil", "extract", "clean", "preserve", "shading"] },
+
+
+
+
+
+ 
+ 
+  {
+    title: "Aplanar",
+    category: "Terminar diseño previo",
+    subcategory: "editor de stencil",
+    description: "Agregar partes que falten en un diseno ",
+    prompt: `Improve the anatomical accuracy of the existing tattoo reference while preserving the original subject, composition, pose, proportions, style, and overall design intent. Correct only visible anatomical inconsistencies and structural errors. Do not redesign the tattoo or introduce new elements. Keep the original visual identity and composition intact.`,
+    negative: `Do not redesign, change the subject, change the pose, alter the composition, add elements, remove elements, stylize, beautify, or invent details.`,
+    tags: ["anatomy", "correction", "edit", "structure"]
+  },
+
+  {
+    title: "convertir imagen en stencil",
+    category: "Terminar diseño previo",
+    subcategory: "editor de stencil",
+    description: "Convertir imagen en stencil",
+    prompt: `Use the provided image as the **ONLY visual reference**.
+
+Convert the exact image into a **professional tattoo stencil and value map**, ready to be used by an experienced tattoo artist.
+
+## 1. ABSOLUTE PRIORITY — DO NOT REDESIGN THE IMAGE
+
+This is an **image conversion**, NOT a new tattoo design.
+
+**Do NOT reinterpret, redesign, stylize, beautify, simplify, exaggerate, or modify the original image.**
+
+Preserve EXACTLY:
+
+* Original composition.
+* Original anatomy.
+* Original proportions.
+* Original pose.
+* Original perspective.
+* Original expression.
+* Original shapes.
+* Original details.
+* Original textures.
+* Original lighting direction.
+* Original placement of every element.
+
+Do not add anything.
+
+Do not remove anything.
+
+Do not move anything.
+
+Do not change the anatomy.
+
+Do not change the facial features.
+
+Do not change the proportions.
+
+Do not change the character or identity of the subject.
+
+The final stencil must be **immediately recognizable as the exact same image**, only translated into a professional tattooing guide.
+
+---
+
+# 2. THINK LIKE A PROFESSIONAL TATTOO ARTIST
+
+Do not approach this as a digital illustrator.
+
+Think like an experienced tattoo artist manually preparing a reference before starting a tattoo.
+
+The goal is to identify:
+
+* What needs to be outlined.
+* What needs to be structurally defined.
+* Where the shadows actually begin.
+* Where the shadows become darker.
+* Where the darkest values are located.
+* Which areas should remain untouched skin.
+* Which details are actually necessary for tattoo execution.
+
+**Do not automatically trace every visible edge.**
+
+Only create a line when that line is useful for constructing or executing the tattoo.
+
+A change in photographic value does NOT automatically require a line.
+
+---
+
+# 3. LINEWORK
+
+Extract only the important structural lines that actually exist in the reference.
+
+Clearly define:
+
+* Main contours.
+* Important anatomical structures.
+* Major folds.
+* Important texture boundaries.
+* Separation between different elements.
+* Important internal details.
+* Features that are necessary to reconstruct the original image.
+
+Use **clean, precise, tattoo-friendly linework**.
+
+Lines should feel like they were manually selected by a professional tattoo artist.
+
+Do NOT:
+
+* Invent decorative lines.
+* Add unnecessary outlines.
+* Trace every tiny tonal variation.
+* Turn every shadow into a line.
+* Add details that do not exist in the reference.
+* Over-outline realistic forms.
+
+For realistic tattooing, prioritize **structural information over excessive linework**.
+
+---
+
+# 4. SHADOW AND VALUE MAP
+
+Translate the original photographic values into a clear **tattoo value map**.
+
+Separate the image into approximately **4 clearly distinguishable values**.
+
+### VALUE 1 — UNTOUCHED SKIN
+
+Completely blank white areas.
+
+These represent areas that should receive little or no ink.
+
+Do not contaminate these areas with unnecessary dots or lines.
+
+### VALUE 2 — LIGHT SHADOW
+
+Very subtle shadow areas.
+
+Represent these with a **very sparse stipple pattern**.
+
+These areas should be suitable for:
+
+* Light stipple shading.
+* Very open whip shading.
+* Sparse 3RL work.
+
+The pattern should remain subtle and clearly lighter than the mid-shadow areas.
+
+### VALUE 3 — MID SHADOW
+
+Moderate shadow areas.
+
+Represent these with a **medium-density stipple pattern**.
+
+These areas should clearly indicate where more ink saturation is required.
+
+Suitable for:
+
+* Medium stipple shading.
+* Controlled whip shading.
+* 3RL or 5RL.
+
+### VALUE 4 — DEEP SHADOW
+
+The darkest shadow areas that actually exist in the original image.
+
+Represent these with:
+
+* Very dense stippling.
+* Heavy whip shading.
+* Or solid black ONLY where the original reference contains true deep black.
+
+Do NOT turn every dark gray area into solid black.
+
+Preserve the difference between dark gray and true black.
+
+---
+
+# 5. SHADING MUST BE DESIGNED FOR MY TECHNIQUE
+
+The stencil must specifically work with:
+
+* **3RL**
+* **5RL**
+* **Stipple shading**
+* **Whip shading**
+* **Pointillism**
+* Gradual saturation buildup.
+
+Do NOT design the shading as if it will be created with:
+
+* Airbrush.
+* Digital blur.
+* Soft photographic gradients.
+* Large magnum packing.
+* Generic black-and-grey digital rendering.
+
+The stencil must tell the tattoo artist **where to place the ink and approximately how concentrated the ink should become**.
+
+The shading should be constructed progressively.
+
+Avoid abrupt artificial transitions unless they actually exist in the original image.
+
+---
+
+# 6. MAKE THE VALUES EXTREMELY EASY TO READ
+
+Create a consistent visual language:
+
+**WHITE / BLANK = untouched skin**
+
+**VERY SPARSE DOTS = light shadow**
+
+**MEDIUM-DENSITY DOTS = mid shadow**
+
+**DENSE DOTS = deep shadow**
+
+**SOLID BLACK = true black only**
+
+The difference between each value must be immediately visible.
+
+The dot density should increase progressively as the original value becomes darker.
+
+Do NOT use random noise.
+
+Do NOT create chaotic grain.
+
+Do NOT make all areas equally textured.
+
+The stipple pattern should look intentional and controlled.
+
+---
+
+# 7. PRESERVE THE ORIGINAL LIGHTING
+
+Analyze the actual light source in the reference.
+
+Preserve:
+
+* Direction of light.
+* Existing highlights.
+* Existing shadows.
+* Shadow shapes.
+* Shadow placement.
+* Relative contrast.
+
+Do NOT invent a new lighting direction.
+
+Do NOT move shadows.
+
+Do NOT create dramatic shadows that are not present.
+
+Do NOT brighten or darken areas simply because it looks more artistic.
+
+The value map must represent the **actual values of the original reference**.
+
+---
+
+# 8. PRESERVE REALISTIC TRANSITIONS
+
+For realistic subjects, avoid turning every gradual transition into a hard boundary.
+
+Some values should transition naturally through controlled stipple density.
+
+The stencil should show:
+
+* Where the shadow starts.
+* Where it becomes progressively darker.
+* Where it reaches maximum saturation.
+
+Do not create artificial geometric shadow shapes.
+
+The value map should follow the natural forms of the subject.
+
+---
+
+# 9. NO AI LOOK — EXTREMELY IMPORTANT
+
+The final stencil must look like it was **manually prepared by an experienced professional tattoo artist**, not generated by AI.
+
+Avoid all visual characteristics commonly associated with AI-generated tattoo designs.
+
+### DO NOT CREATE:
+
+* Unnatural or overly perfect linework.
+* Artificial symmetry.
+* Random micro-details.
+* Invented textures.
+* Repetitive shading patterns.
+* Mechanically repeated dots.
+* Perfect digital gradients.
+* Excessive sharpening.
+* Overly clean vector-like appearance.
+* Generic AI tattoo aesthetics.
+* Fake photographic details.
+* Random black patches.
+* Unnecessary outlines.
+* Invented anatomy.
+* Warped anatomy.
+* Duplicated details.
+* Impossible or inconsistent textures.
+* Decorative details added only to make the design look more complex.
+
+The stencil should have the **natural selectivity and imperfections of a professionally prepared tattoo stencil**.
+
+Every line and every shadow indication must have a clear purpose.
+
+Do not add details simply because they make the image look more impressive.
+
+**LESS IS MORE.**
+
+Only include information that is actually present in the reference and useful for tattoo execution.
+
+---
+
+# 10. HUMAN TATTOO-ARTIST LOGIC
+
+The result should look like a tattoo artist manually studied the reference and decided:
+
+**"This line is necessary."**
+
+**"This area needs a light shadow."**
+
+**"This area needs more stipple density."**
+
+**"This area needs a deeper black."**
+
+**"This area should remain skin."**
+
+Do not make every part equally detailed.
+
+Do not make every edge equally dark.
+
+Do not make every shadow equally dense.
+
+Prioritize the information that actually matters when tattooing.
+
+---
+
+# 11. DO NOT OVERPROCESS THE IMAGE
+
+Avoid:
+
+* Cartoonization.
+* Digital illustration aesthetics.
+* Vector appearance.
+* Excessive outlining.
+* Artificial textures.
+* Random hatching.
+* Crosshatching.
+* Airbrush gradients.
+* Excessive black.
+* Excessive detail.
+* Invented highlights.
+* Invented shadows.
+* Generic tattoo-flash styling.
+
+Do not "improve" the reference.
+
+Do not make it more dramatic.
+
+Do not make it more artistic.
+
+**Preserve the original character of the image.**
+
+---
+
+# 12. TATTOO-FRIENDLY OUTPUT
+
+The final result should be:
+
+* High resolution.
+* Clean.
+* Easy to read.
+* Easy to print.
+* Easy to transfer.
+* Easy to follow while tattooing.
+* Suitable for realistic tattoo execution.
+
+The white background must remain clean.
+
+The stencil should contain only information necessary for tattoo execution.
+
+---
+
+# 13. FINAL QUALITY CHECK
+
+Before producing the final image, verify:
+
+1. Is this still exactly the same subject?
+2. Is the anatomy unchanged?
+3. Is the composition unchanged?
+4. Are all important details preserved?
+5. Were any new elements invented?
+6. Were any original elements removed?
+7. Is the original lighting preserved?
+8. Are the shadow values correctly represented?
+9. Can I clearly distinguish light, medium, and deep shadows?
+10. Are the lines actually useful for tattooing?
+11. Is the stencil compatible with 3RL and 5RL?
+12. Can the shading be executed using stipple and whip shading?
+13. Does it look manually prepared rather than AI-generated?
+14. Are unnecessary lines and details removed?
+15. Does the final result still look like the original image?
+
+If any element has been changed, **correct it before generating the final result.**
+
+---
+
+# FINAL INSTRUCTION
+
+Create a **professional, realistic, tattoo-ready stencil and value map from the provided image**.
+
+Do not create a new design.
+
+Do not reinterpret the image.
+
+Do not improve the image.
+
+Do not stylize the image.
+
+**Simply translate the exact original image into a clean, human-looking tattoo stencil with clear value separation.**
+
+The final result should look like a **real professional tattoo artist manually prepared the stencil and shading map for a tattoo using 3RL, 5RL, stipple shading, and whip shading.**
+
+### ABSOLUTE PRIORITY:
+
+**IMAGE FIDELITY → ACCURATE VALUES → TATTOOABILITY → CLEAR VALUE SEPARATION → NATURAL HUMAN-MADE APPEARANCE**
+
+**NOT AI ART. NOT A REDESIGN. NOT A NEW INTERPRETATION.**
+
+**THE ORIGINAL IMAGE MUST REMAIN THE ORIGINAL IMAGE.**
+`,
+    negative: `Do not redesign, change the subject, alter the composition, add decorative elements, exaggerate details, change anatomy, or create a different tattoo.`,
+    tags: ["realism", "detail", "depth", "edit"]
+  },
+
+  {
+    title: "Perfeccionar stencil",
+    category: "Terminar diseño previo",
+    subcategory: "editor de stencil",
+    description: "A partir de un diseno, crear un stencil con las lineas y sombras marcadas",
+    prompt: `Remove the background surrounding the existing tattoo design. Isolate the tattoo while preserving its original shapes, proportions, composition, linework, internal details and negative spaces. Do not modify the tattoo itself. Present the isolated design on a clean neutral or white background.`,
+    negative: `Do not redesign, redraw, simplify, add, remove, resize, rotate, or reinterpret any tattoo element.`,
+    tags: ["background", "extract", "clean", "isolate"]
+  }
+
+];
+
+/*
+=========================================================
+CATEGORY CONFIGURATION
+=========================================================
+*/
+
+const categories = [
+  {
+    id: "edit-refine",
+    name: "Terminar diseño previo",
+    description: "Improve, correct and transform an existing reference without losing its original identity.",
+    dataName: "Terminar diseño previo"
+  },
+  {
+    id: "stencil",
+    name: "0 to Hero",
+    description: "Diseno desde cero",
+    dataName: "Stencil"
+  },
+
+
+ // {
+   // id: "style-technique",
+    //name: "Style & Technique",
+    //description: "Prompts for visual style, shading, linework, contrast and tattoo technique.",
+    //dataName: "Style & Technique"
+ // },
+ // {
+   // id: "composition",
+    //name: "Composition & Placement",
+    //description: "Adapt a design to body anatomy, flow, scale, balance and placement.",
+    //dataName: "Composition & Placement"
+  //},
+ // {
+   // id: "master-prompts",
+    //name: "Master Prompts",
+    //description: "Reusable foundation prompts that can be combined with specialized instructions.",
+    //dataName: "Master Prompts"
+  //}
+];
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function categoryId(name) {
+  const found = categories.find(c => c.dataName === name);
+  return found ? found.id : name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function createCard(item, index) {
+  const tags = (item.tags || [])
+    .map(tag => `<span class="tag">${escapeHtml(tag)}</span>`)
+    .join("");
+
+  return `
+    <div class="col-12 col-md-6 col-xl-4 prompt-result"
+         data-search="${escapeHtml([
+           item.title,
+           item.category,
+           item.subcategory,
+           item.description,
+           item.prompt,
+           item.negative,
+           ...(item.tags || [])
+         ].join(" "))}">
+      <article class="prompt-card">
+        <div class="card-body-custom">
+          <div class="eyebrow">${escapeHtml(item.subcategory || item.category)}</div>
+          <h3 class="prompt-title">${escapeHtml(item.title)}</h3>
+          <p class="prompt-description">${escapeHtml(item.description || "")}</p>
+
+          <div class="mini-label">Prompt</div>
+          <div class="prompt-box" id="prompt-${index}">${escapeHtml(item.prompt)}</div>
+
+          <div class="mini-label">Negative / Restrictions</div>
+          <div class="prompt-box negative-box" id="negative-${index}">${escapeHtml(item.negative || "")}</div>
+
+          <div class="tags">${tags}</div>
+
+          <div class="card-actions">
+            <button class="btn btn-rj copy-btn"
+                    data-copy-target="prompt-${index}"
+                    type="button">
+              Copy Prompt
+            </button>
+            <button class="btn btn-outline-rj copy-btn"
+                    data-copy-target="negative-${index}"
+                    type="button">
+              Copy Negative
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  `;
+}
+
+function renderLibrary() {
+  const library = document.getElementById("library");
+  library.innerHTML = "";
+
+  categories.forEach(category => {
+    const items = prompts.filter(p => p.category === category.dataName);
+
+    const section = document.createElement("section");
+    section.className = "category-block";
+    section.id = category.id;
+    section.dataset.category = category.dataName;
+
+    section.innerHTML = `
+      <div class="category-header d-flex justify-content-between align-items-start gap-3"
+           role="button"
+           tabindex="0"
+           aria-expanded="true">
+        <div>
+          <h2 class="category-title">${escapeHtml(category.name)}</h2>
+          <p class="category-desc">${escapeHtml(category.description)}</p>
+        </div>
+        <span class="category-toggle">−</span>
+      </div>
+
+      <div class="category-content">
+        <div class="row g-3">
+          ${
+            items.length
+              ? items.map((item, i) => createCard(item, `${category.id}-${i}`)).join("")
+              : `<div class="col-12"><div class="p-4 border rounded-3 text-secondary small">No prompts added yet. Add prompts to the <code>prompts</code> array in this same HTML file.</div></div>`
+          }
+        </div>
+      </div>
+    `;
+
+    library.appendChild(section);
+  });
+
+  bindAccordion();
+  bindCopyButtons();
+}
+
+function bindAccordion() {
+  document.querySelectorAll(".category-header").forEach(header => {
+    const toggle = () => {
+      const content = header.nextElementSibling;
+      const icon = header.querySelector(".category-toggle");
+      const open = header.getAttribute("aria-expanded") === "true";
+
+      header.setAttribute("aria-expanded", String(!open));
+      content.style.display = open ? "none" : "block";
+      icon.textContent = open ? "+" : "−";
+    };
+
+    header.addEventListener("click", toggle);
+    header.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    });
+  });
+}
+
+function bindCopyButtons() {
+  document.querySelectorAll(".copy-btn").forEach(button => {
+    button.addEventListener("click", async () => {
+      const target = document.getElementById(button.dataset.copyTarget);
+      const originalText = button.textContent;
+
+      try {
+        await navigator.clipboard.writeText(target.textContent);
+        button.textContent = "Copied ✓";
+
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 1400);
+      } catch (error) {
+        // Fallback for browsers that block Clipboard API
+        const temp = document.createElement("textarea");
+        temp.value = target.textContent;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+
+        button.textContent = "Copied ✓";
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 1400);
+      }
+    });
+  });
+}
+
+function filterLibrary() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const cards = document.querySelectorAll(".prompt-result");
+  let visibleCards = 0;
+
+  cards.forEach(card => {
+    const text = card.dataset.search.toLowerCase();
+    const visible = !query || text.includes(query);
+    card.style.display = visible ? "" : "block";
+    if (visible) visibleCards++;
+  });
+
+  document.querySelectorAll(".category-block").forEach(section => {
+    const sectionCards = section.querySelectorAll(".prompt-result");
+    const hasMatchingCard = [...sectionCards].some(card => card.style.display !== "none");
+
+    if (query) {
+      section.style.display = hasMatchingCard ? "" : "none";
+    } else {
+      section.style.display = "";
+    }
+  });
+
+  document.getElementById("noResults").style.display =
+    visibleCards === 0 ? "block" : "none";
+}
+
+document.getElementById("searchInput").addEventListener("input", filterLibrary);
+
+renderLibrary();
+</script>
+</body>
+</html>
